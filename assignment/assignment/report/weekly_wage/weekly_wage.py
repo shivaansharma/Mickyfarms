@@ -145,6 +145,7 @@ def get_detail_columns():
         {"label": _("Advance Balance (Their Debt)"),   "fieldname": "running_advance",  "fieldtype": "Currency", "width": 190},
         {"label": _("Wages Owed Balance (Our Debt)"),  "fieldname": "running_payable",  "fieldtype": "Currency", "width": 190},
         {"label": _("Net Position (+ve = they owe you)"), "fieldname": "net_balance", "fieldtype": "Currency", "width": 210},
+       
     ]
 
 
@@ -242,6 +243,7 @@ def get_detail_data(filters):
             "tx_type":       w["tx_type"],
             "delta_advance": -flt(w["advance_deducted"]),
             "delta_payable": flt(w["wages_earned"]) - flt(w["cash_paid_out"]),
+            "signature" : ""
         })
 
     for entry in standalone_gl:
@@ -250,7 +252,6 @@ def get_detail_data(filters):
         credit  = flt(entry["credit"])
         key     = entry["voucher_no"]
         remark  = entry["je_remark"] or ""
-
         if "Auto attendance processing" in remark or "Retroactive attendance clawback" in remark:
             if key not in auto_jv_groups:
                 # Extract days and rate via regex from the automated remark string
@@ -274,6 +275,7 @@ def get_detail_data(filters):
                     "delta_advance": 0.0,
                     "delta_payable": 0.0,
                     "tx_type":       display_label,
+                    "signature":     ""
                 }
             
             if advance_account in account:
@@ -294,6 +296,7 @@ def get_detail_data(filters):
             "delta_advance": 0.0,
             "delta_payable": 0.0,
             "tx_type":       "",
+            "signature":     ""  
         }
 
         if advance_account in account:
@@ -374,6 +377,7 @@ def get_detail_data(filters):
             "running_advance": live_bal["advance_owed"],
             "running_payable": live_bal["outstanding_balance"],
             "net_balance": live_bal["advance_owed"] - live_bal["outstanding_balance"],
+            "signature":     ""  
         })
     else:
         raw_timeline.append({
@@ -387,6 +391,7 @@ def get_detail_data(filters):
             "running_advance": live_bal["advance_owed"],
             "running_payable": live_bal["outstanding_balance"],
             "net_balance": live_bal["advance_owed"] - live_bal["outstanding_balance"],
+            "signature":     ""  
         })
 
     return raw_timeline
@@ -403,6 +408,7 @@ def get_summary_columns():
         {"label": _("Total Cash Distributed"),        "fieldname": "total_net_payout",    "fieldtype": "Currency", "width": 150},
         {"label": _("Current Advance Balance (Live)"), "fieldname": "latest_advance_owed", "fieldtype": "Currency", "width": 200},
         {"label": _("Current Wages Owed (Live)"),     "fieldname": "outstanding_balance", "fieldtype": "Currency", "width": 200},
+        {"label": _("Signature"),                      "fieldname": "signature",           "fieldtype": "Data",     "width": 150 },
     ]
 
 
@@ -481,7 +487,7 @@ def get_summary_data(filters):
 
         report_data.append({
             "employee":            "",
-            "employee_name":       "<b>GLOBAL FARM TOTALS</b>",
+            "employee_name":       "<b>MICKY FARM TOTALS</b>",
             "last_payment_date":   "",
             "total_days_worked":   total_days,
             "total_payment":       total_payment,
@@ -497,7 +503,6 @@ def get_summary_data(filters):
 # PROCESS UNRECORDED ATTENDANCE — automatically handles retro edits
 # ===============================================================
 def cancel_previous_auto_entries(employee):
-    """Finds and cancels previously generated auto-attendance Journal Entries for an employee."""
     previous_entries = frappe.db.sql("""
         SELECT DISTINCT je.name
         FROM `tabJournal Entry` je
@@ -509,9 +514,19 @@ def cancel_previous_auto_entries(employee):
     """, (employee,), as_dict=0)
 
     for row in previous_entries:
-        je_doc = frappe.get_doc("Journal Entry", row[0])
-        je_doc.cancel()
+        je_name = row[0]
 
+        # ── Clear the backlinks FIRST before Frappe checks dependencies ──
+        frappe.db.sql("""
+            UPDATE `tabAttendance`
+            SET custom_processed_in_je = NULL
+            WHERE custom_processed_in_je = %s
+        """, (je_name,))
+        frappe.db.commit()
+
+        # Now Frappe won't find any linked Attendance records
+        je_doc = frappe.get_doc("Journal Entry", je_name)
+        je_doc.cancel()
 
 @frappe.whitelist()
 def process_unrecorded_attendance(employee=None):
@@ -696,7 +711,18 @@ def process_unrecorded_attendance(employee=None):
 
         je.insert(ignore_permissions=True)
         je.submit()
-
+        # Stamp each attendance record so fetch knows it's been accounted for
+        for att in frappe.get_all(
+            "Attendance",
+            filters={
+                "employee": emp.name,
+                "attendance_date": ["between", [from_date, to_date]],
+                "docstatus": 1,
+                "status": ["in", ["Present", "Half Day"]]
+            },
+            fields=["name"]
+        ):
+            frappe.db.set_value("Attendance", att.name, "custom_processed_in_je", je.name)
         processed.append({
             "employee":         emp.name,
             "employee_name":    emp.employee_name,

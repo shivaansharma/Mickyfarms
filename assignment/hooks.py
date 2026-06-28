@@ -22,15 +22,9 @@ app_license = "mit"
 # ]
 fixtures = [
     {
-        "dt": "Workspace",
+        "doctype": "Custom Field",
         "filters": [
-            [
-                "name",
-                "in",
-                [
-                    "Farm"  # <-- Matches the "name" attribute from your JSON schema
-                ]
-            ]
+            ["module", "=", "assignment"]
         ]
     }
 ]

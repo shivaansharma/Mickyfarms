@@ -232,7 +232,8 @@ def fetch_employees_and_metrics(to_date, company, employee=None):
                     "employee": emp.name,
                     "attendance_date": ["between", [computed_from_date, to_date]],
                     "docstatus": 1,
-                    "status": ["in", ["Present", "Half Day"]]
+                    "status": ["in", ["Present", "Half Day"]],
+                    "custom_processed_in_je": ["is", "not set"]
                 },
                 fields=["status"]
             )
