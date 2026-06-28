@@ -21,14 +21,18 @@ app_license = "mit"
 # 	}
 # ]
 fixtures = [
-    {"dt": "Custom Field"},
-    {"dt": "Property Setter"},
-    {"dt": "Workspace"},
-    {"dt": "Workspace Link"},
-    {"dt": "Client Script"},
-    {"dt": "Server Script"},
-    {"dt": "Print Format"},
-    {"dt": "Report"}
+    {
+        "dt": "Workspace",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Farm"  # <-- Matches the "name" attribute from your JSON schema
+                ]
+            ]
+        ]
+    }
 ]
 # Includes in <head>
 # ------------------
