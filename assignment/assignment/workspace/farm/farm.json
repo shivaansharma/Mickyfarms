@@ -1,0 +1,197 @@
+{
+ "app": "assignment",
+ "charts": [],
+ "content": "[{\"id\":\"FmFj1TmM8y\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 16px;\\\"><b>Manage Your Farm</b></span>\",\"col\":12}},{\"id\":\"XWMZS0Trqj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Employee Management&nbsp;\",\"col\":12}},{\"id\":\"Hj3aOhk5aM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add Employee\",\"col\":3}},{\"id\":\"9knfbnNXcB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance \",\"col\":3}},{\"id\":\"Hgne8WDNmV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance in Bulk\",\"col\":5}},{\"id\":\"8oEv0b3OYT\",\"type\":\"paragraph\",\"data\":{\"text\":\"Procurement\",\"col\":12}},{\"id\":\"4Nzo2-ZhM1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"vUMDuTyjdR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Buy\",\"col\":3}},{\"id\":\"nXEvfcvlUT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier\",\"col\":3}},{\"id\":\"E4QyObn52h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Settlement\",\"col\":4}},{\"id\":\"ga10pOMfXw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Account Statement\",\"col\":5}},{\"id\":\"-AoswU0YBW\",\"type\":\"paragraph\",\"data\":{\"text\":\"Stock\",\"col\":12}},{\"id\":\"1qpnLf9emV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"id\":\"jARb_BWJuh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Ledger\",\"col\":3}},{\"id\":\"VNeTI2Q39D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item Prices\",\"col\":3}},{\"id\":\"oXPFn8Vs3W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Issue By Plot\",\"col\":4}},{\"id\":\"9e4QDH3S1C\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Salary</span>\",\"col\":12}},{\"id\":\"AnFlj8d2WY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pay Wages\",\"col\":3}},{\"id\":\"xLr_lW6WtE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Theka\",\"col\":3}},{\"id\":\"t75ilJZGAa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Report\",\"col\":3}},{\"id\":\"uTDy8p-7s8\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Sales</span>\",\"col\":12}},{\"id\":\"rtI-vCuWtp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ffLmbh0Cwx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Register\",\"col\":3}},{\"id\":\"JypCO-rtPh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Analytics\",\"col\":3}},{\"id\":\"nPQ9K_PzpD\",\"type\":\"paragraph\",\"data\":{\"text\":\"Plot and Crop Management\",\"col\":12}},{\"id\":\"HDTf-jAU_q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cost Center\",\"col\":3}},{\"id\":\"VayYXp3IyW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Profit And Loss Statement\",\"col\":5}},{\"id\":\"ZjXvIuCWQi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Plot Statement \",\"col\":3}}]",
+ "creation": "2026-06-11 19:40:48.408339",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Farm",
+ "link_type": "DocType",
+ "links": [],
+ "modified": "2026-06-28 11:17:48.542535",
+ "modified_by": "Administrator",
+ "module": "assignment",
+ "name": "Farm",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 0.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Item Prices",
+   "link_to": "Item Prices",
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Cost Center",
+   "link_to": "Cost Center",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Profit And Loss Statement",
+   "link_to": "Profit and Loss Statement",
+   "report_ref_doctype": "GL Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Add Employee",
+   "link_to": "Employee",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Register",
+   "link_to": "Sales Register",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Analytics",
+   "link_to": "Sales Analytics",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Supplier Settlement",
+   "link_to": "Supplier Settlement",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Sales Invoice",
+   "link_to": "Sales Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Salary Report",
+   "link_to": "Weekly Wage",
+   "report_ref_doctype": "Weekly Wage Payment",
+   "type": "Report"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "Supplier",
+   "link_to": "Supplier",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Mark Attendance in Bulk",
+   "link_to": "Employee Attendance Tool",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Stock Entry",
+   "link_to": "Stock Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Theka",
+   "link_to": "Employee Contract",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Plot Statement ",
+   "link_to": "Plot Material Log",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Material Issue By Plot",
+   "link_to": "Material Issue by Plot",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Pay Wages",
+   "link_to": "Weekly Wage Payment",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Item",
+   "link_to": "Item",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Supplier Account Statement",
+   "link_to": "Supplier Account Statement",
+   "report_ref_doctype": "Supplier",
+   "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Mark Attendance ",
+   "link_to": "Attendance",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Stock Ledger",
+   "link_to": "Stock Ledger",
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Buy",
+   "link_to": "Purchase Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Farm",
+ "type": "Workspace"
+}

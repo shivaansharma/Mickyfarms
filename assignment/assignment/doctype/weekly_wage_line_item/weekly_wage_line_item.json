@@ -1,0 +1,117 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "creation": "2026-06-19 00:07:20.964496",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "daily_wage_rate",
+  "payment",
+  "days_worked",
+  "total_advance_owed",
+  "what_we_owe",
+  "advance_deduction",
+  "gross_wage",
+  "final_net_payout",
+  "advance_snapshot",
+  "outstanding_snapshot"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "daily_wage_rate",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Daily Wage Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_worked",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Days Worked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_advance_owed",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Total Advance Owed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "advance_deduction",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Advance Deduction"
+  },
+  {
+   "fieldname": "gross_wage",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Gross Wage",
+   "read_only": 1
+  },
+  {
+   "fieldname": "final_net_payout",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Final Net Payout"
+  },
+  {
+   "fieldname": "what_we_owe",
+   "fieldtype": "Data",
+   "label": "What We owe",
+   "read_only": 1
+  },
+  {
+   "fieldname": "advance_snapshot",
+   "fieldtype": "Data",
+   "label": "Advance Snapshot"
+  },
+  {
+   "fieldname": "outstanding_snapshot",
+   "fieldtype": "Data",
+   "label": "Outstanding Snapshot"
+  },
+  {
+   "fieldname": "payment",
+   "fieldtype": "Data",
+   "label": "Payment",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-22 12:05:30.181821",
+ "modified_by": "Administrator",
+ "module": "assignment",
+ "name": "Weekly Wage Line Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

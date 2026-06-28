@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "EMP-CON-.#####",
+ "creation": "2026-06-18 21:01:48.630573",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_dey0",
+  "employee",
+  "employee_name",
+  "amended_from",
+  "assigned_plots",
+  "total_contracted_area",
+  "rate_per_acre",
+  "total_payout_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_dey0",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Contract",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assigned_plots",
+   "fieldtype": "Table",
+   "label": "Assigned Plots",
+   "options": "Employee Contract Plot"
+  },
+  {
+   "fieldname": "total_contracted_area",
+   "fieldtype": "Data",
+   "label": "Total Contracted Area",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rate_per_acre",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rate Per Acre",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_payout_amount",
+   "fieldtype": "Data",
+   "label": "Total Payout Amount",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-06-18 21:10:32.345743",
+ "modified_by": "Administrator",
+ "module": "assignment",
+ "name": "Employee Contract",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
