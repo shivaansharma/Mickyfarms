@@ -21,8 +21,9 @@ app_license = "mit"
 # 	}
 # ]
 fixtures = [
+   
     {
-        "doctype": "Custom Field",
+        "doctype": "Property Setter",
         "filters": [
             ["module", "=", "assignment"]
         ]
@@ -33,7 +34,6 @@ fixtures = [
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/assignment/css/assignment.css"
-# app_include_js = "/assets/assignment/js/assignment.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/assignment/css/assignment.css"
@@ -267,5 +267,6 @@ fixtures = [
 doctype_js = {
     "Employee": "public/js/employee.js",
     "Stock Entry": "public/js/stock_entry.js",
-    "Purchase Invoice": "public/js/purchase_invoice.js"
+    "Purchase Invoice": "public/js/purchase_invoice.js",
+    "System Settings": "public/js/system.js"
 }
