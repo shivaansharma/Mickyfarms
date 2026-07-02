@@ -33,6 +33,15 @@ def execute(filters=None):
         }
     ]
     
+    # --- ADDED CODE: Append the Total Row to the data array ---
+    if data:
+        data.append({
+            "cost_center": "Total", # Places "Total" in the first column
+            "qty": total_qty,       # Assigns the summed qty
+            "amount": total_val     # Assigns the summed amount
+        })
+    # ----------------------------------------------------------
+    
     return columns, data, None, None, report_summary
 
 def get_columns():
@@ -92,4 +101,4 @@ def get_data(filters):
         ORDER BY se.posting_date DESC, sed.cost_center ASC
     """, params, as_dict=1)
     
-    return data
+    return list(data) # Convert tuple to list to allow appending

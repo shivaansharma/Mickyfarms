@@ -265,5 +265,7 @@ fixtures = [
 
 
 doctype_js = {
-    "Employee": "public/js/employee.js"
+    "Employee": "public/js/employee.js",
+    "Stock Entry": "public/js/stock_entry.js",
+    "Purchase Invoice": "public/js/purchase_invoice.js"
 }
