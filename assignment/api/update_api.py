@@ -11,7 +11,7 @@ def update_app():
     commands = [
         f"cd {bench}",
         f"bench --site {site} backup",
-        "git -C apps/assignment pull origin main",
+        "git -C apps/assignment pull upstream main",
         f"bench --site {site} migrate",
         "bench build",
         "bench restart"
