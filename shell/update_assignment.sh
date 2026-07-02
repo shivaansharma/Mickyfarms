@@ -7,7 +7,7 @@ BENCH_DIR="$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")"
 
 cd "$BENCH_DIR"
 
-git -C apps/assignment pull origin upstream
+git -C apps/assignment pull upstream main
 bench --site "$SITE" migrate
 bench build
 bench restart
