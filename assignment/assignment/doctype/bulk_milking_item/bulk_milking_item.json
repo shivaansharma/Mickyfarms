@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "creation": "2026-07-03 20:25:52.085908",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "animal",
+  "morning_yield",
+  "evening_yield",
+  "total_yield"
+ ],
+ "fields": [
+  {
+   "fieldname": "animal",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Animal",
+   "options": "Animal"
+  },
+  {
+   "fieldname": "morning_yield",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Morning Yield"
+  },
+  {
+   "fieldname": "evening_yield",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Evening Yield"
+  },
+  {
+   "fieldname": "total_yield",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Total Yield",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-03 20:33:42.054012",
+ "modified_by": "Administrator",
+ "module": "assignment",
+ "name": "Bulk Milking Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
