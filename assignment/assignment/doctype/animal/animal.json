@@ -14,7 +14,12 @@
   "animal_type",
   "breed",
   "status",
-  "lactation_status"
+  "lactation_status",
+  "lft",
+  "rgt",
+  "is_group",
+  "old_parent",
+  "parent_animal"
  ],
  "fields": [
   {
@@ -32,51 +37,103 @@
    "search_index": 1
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "name1",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Name",
+   "reqd": 1,
    "unique": 1
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "breed",
    "fieldtype": "Link",
    "label": "Breed",
    "options": "Breed"
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "animal_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Animal Type",
-   "options": "Cow\nBuffalo\nBull\nCalf\nHeifer"
+   "options": "Cow\nBuffalo\nBull\nCalf\nHeifer",
+   "reqd": 1
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "gender",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Gender",
-   "options": "Male\nFemale"
+   "options": "Male\nFemale",
+   "reqd": 1
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
    "options": "Active\nSold\nDead\nCulled"
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "lactation_status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Lactation Status",
-   "options": "Milking\nDry\nPregnant\nHeifer"
+   "options": "Milking\nDry\nPregnant\nHeifer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lft",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Left",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rgt",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Right",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "fieldname": "old_parent",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Old Parent",
+   "options": "Animal"
+  },
+  {
+   "fieldname": "parent_animal",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Parent Animal",
+   "options": "Animal"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
+ "is_tree": 1,
  "links": [],
- "modified": "2026-07-03 20:20:23.699016",
+ "modified": "2026-07-13 08:34:47.020945",
  "modified_by": "Administrator",
  "module": "assignment",
  "name": "Animal",
  "naming_rule": "By fieldname",
+ "nsm_parent_field": "parent_animal",
  "owner": "Administrator",
  "permissions": [
   {
@@ -93,6 +150,7 @@
    "write": 1
   }
  ],
+ "quick_entry": 1,
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
  "sort_field": "creation",

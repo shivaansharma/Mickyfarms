@@ -11,10 +11,14 @@
   "employee",
   "employee_name",
   "amended_from",
+  "company",
+  "posting_date",
   "assigned_plots",
+  "pay_advance",
   "total_contracted_area",
   "rate_per_acre",
-  "total_payout_amount"
+  "total_payout_amount",
+  "net_payable_amount"
  ],
  "fields": [
   {
@@ -34,8 +38,8 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
-   "label": "Employee",
-   "options": "Employee"
+   "label": "Contractor",
+   "options": "Supplier"
   },
   {
    "fieldname": "employee_name",
@@ -67,13 +71,35 @@
    "fieldtype": "Data",
    "label": "Total Payout Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "pay_advance",
+   "fieldtype": "Data",
+   "label": "Pay Advance"
+  },
+  {
+   "fieldname": "net_payable_amount",
+   "fieldtype": "Data",
+   "label": "Net Payable Amount"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "default": "Micky Farms",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-18 21:10:32.345743",
+ "modified": "2026-07-12 22:33:24.676761",
  "modified_by": "Administrator",
  "module": "assignment",
  "name": "Employee Contract",

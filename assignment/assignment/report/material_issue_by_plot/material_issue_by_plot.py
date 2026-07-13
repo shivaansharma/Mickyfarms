@@ -36,9 +36,10 @@ def execute(filters=None):
     # --- ADDED CODE: Append the Total Row to the data array ---
     if data:
         data.append({
-            "cost_center": "Total", # Places "Total" in the first column
-            "qty": total_qty,       # Assigns the summed qty
-            "amount": total_val     # Assigns the summed amount
+            "cost_center": "", # Left blank to prevent breaking the Link field formatting
+            "item_name": "<b>TOTAL</b>", 
+            "qty": total_qty,       
+            "amount": total_val     
         })
     # ----------------------------------------------------------
     
@@ -71,9 +72,12 @@ def get_data(filters):
         conditions.append("sed.cost_center = %(cost_center)s")
         params["cost_center"] = filters.get("cost_center")
         
-    if filters.get("from_date") and filters.get("to_date"):
-        conditions.append("se.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+    # Split the date filter so it works even if the user only provides one date
+    if filters.get("from_date"):
+        conditions.append("se.posting_date >= %(from_date)s")
         params["from_date"] = filters.get("from_date")
+    if filters.get("to_date"):
+        conditions.append("se.posting_date <= %(to_date)s")
         params["to_date"] = filters.get("to_date")
         
     if filters.get("item_code"):
@@ -101,4 +105,4 @@ def get_data(filters):
         ORDER BY se.posting_date DESC, sed.cost_center ASC
     """, params, as_dict=1)
     
-    return list(data) # Convert tuple to list to allow appending
+    return list(data)

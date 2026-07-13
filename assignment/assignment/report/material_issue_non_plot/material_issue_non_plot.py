@@ -20,9 +20,9 @@ def execute(filters=None):
     
     if data:
         data.append({
-            "cost_center": "Total",
+            "cost_center": "", # Left blank to prevent breaking the Link field formatting
+            "item_name": f"<b>TOTAL (Total Qty Issued: {total_qty})</b>",
             "description": "", 
-            "qty": total_qty,
             "amount": total_val
         })
     
@@ -34,9 +34,8 @@ def get_columns():
         {"label": _("Posting Date"), "fieldname": "posting_date", "fieldtype": "Date", "width": 110},
         {"label": _("Stock Entry"), "fieldname": "parent", "fieldtype": "Link", "options": "Stock Entry", "width": 150},
         {"label": _("Item Code"), "fieldname": "item_code", "fieldtype": "Link", "options": "Item", "width": 140},
-        {"label": _("Item Name"), "fieldname": "item_name", "fieldtype": "Data", "width": 180},
+        {"label": _("Item Name"), "fieldname": "item_name", "fieldtype": "Data", "width": 260}, # Widened slightly to accommodate the bold totals text
         {"label": _("Description"), "fieldname": "description", "fieldtype": "Data", "width": 200},
-        {"label": _("Qty Issued"), "fieldname": "qty", "fieldtype": "Float", "width": 110},
         {"label": _("UOM"), "fieldname": "uom", "fieldtype": "Data", "width": 90},
         {"label": _("Rate"), "fieldname": "basic_rate", "fieldtype": "Currency", "width": 110},
         {"label": _("Total Amount"), "fieldname": "amount", "fieldtype": "Currency", "width": 130},
@@ -52,10 +51,15 @@ def get_data(filters):
     if filters.get("cost_center"):
         conditions.append("sed.cost_center = %(cost_center)s")
         params["cost_center"] = filters.get("cost_center")
-    if filters.get("from_date") and filters.get("to_date"):
-        conditions.append("se.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+        
+    # Split the date filter so it works even if the user only provides one date
+    if filters.get("from_date"):
+        conditions.append("se.posting_date >= %(from_date)s")
         params["from_date"] = filters.get("from_date")
+    if filters.get("to_date"):
+        conditions.append("se.posting_date <= %(to_date)s")
         params["to_date"] = filters.get("to_date")
+        
     if filters.get("item_code"):
         conditions.append("sed.item_code = %(item_code)s")
         params["item_code"] = filters.get("item_code")
@@ -71,4 +75,5 @@ def get_data(filters):
           AND (cc.custom_is_plot IS NULL OR cc.custom_is_plot = 0)
         ORDER BY se.posting_date DESC, sed.cost_center ASC
     """, params, as_dict=1)
+    
     return list(data)

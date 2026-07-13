@@ -50,11 +50,36 @@ class SupplierSettlement(Document):
             fields=["name", "outstanding_amount", "posting_date"],
             order_by="posting_date asc",  # This enforces First-In, First-Out
         )
+        
+        # Tag doctype for the merged list below
+        for d in outstanding_invoices: d["doctype"] = "Purchase Invoice"
 
-        # 3. Allocate the lump sum to the invoices
+        # --- NEW: ADD DOCTOR LOG SUPPORT ---
+        # Fetch all outstanding Doctor Logs (Assumes you have an 'outstanding_amount' field)
+        outstanding_doctor_logs = frappe.get_all(
+            "Doctor Log",
+            filters={
+                "doctor": self.supplier, # Assuming doctor link matches the supplier ID
+                "company": self.company,
+                "docstatus": 1,
+                "outstanding_amount": (">", 0),
+            },
+            fields=["name", "outstanding_amount", "posting_date"],
+            order_by="posting_date asc",
+        )
+        
+        # Tag doctype for the merged list
+        for d in outstanding_doctor_logs: d["doctype"] = "Doctor Log"
+
+        # Merge and sort both lists by posting_date to maintain true FIFO across both types
+        all_outstanding = outstanding_invoices + outstanding_doctor_logs
+        all_outstanding.sort(key=lambda x: x.posting_date if x.posting_date else nowdate())
+        # -----------------------------------
+
+        # 3. Allocate the lump sum to the invoices/logs
         allocated_amount = 0
 
-        for inv in outstanding_invoices:
+        for inv in all_outstanding:
             if allocated_amount >= safe_payment_amount:
                 break  # Money has run out
 
@@ -62,7 +87,7 @@ class SupplierSettlement(Document):
             amount_to_allocate = min(flt(inv.outstanding_amount), remaining_funds)
 
             pe.append("references", {
-                "reference_doctype": "Purchase Invoice",
+                "reference_doctype": inv.doctype, # Dynamic: Purchase Invoice or Doctor Log
                 "reference_name": inv.name,
                 "allocated_amount": amount_to_allocate,
             })
@@ -127,3 +152,27 @@ class SupplierSettlement(Document):
             f"Linked Payment Entry ({pe.name}) was cancelled along with this settlement.",
             alert=True,
         )
+
+@frappe.whitelist()
+def get_aggregated_outstanding(supplier, company):
+    inv_total = frappe.db.sql("""
+        SELECT SUM(outstanding_amount) 
+        FROM `tabPurchase Invoice` 
+        WHERE supplier=%s AND company=%s AND docstatus=1
+    """, (supplier, company))[0][0] or 0
+
+    con_total = frappe.db.sql("""
+        SELECT SUM(net_payable_amount) 
+        FROM `tabEmployee Contract` 
+        WHERE employee=%s AND company=%s AND docstatus=1
+    """, (supplier, company))[0][0] or 0
+
+    # --- NEW: ADD DOCTOR LOG SUPPORT ---
+    doc_total = frappe.db.sql("""
+        SELECT SUM(outstanding_amount) 
+        FROM `tabDoctor Log` 
+        WHERE doctor=%s AND company=%s AND docstatus=1
+    """, (supplier, company))[0][0] or 0
+    # -----------------------------------
+
+    return inv_total + con_total + doc_total

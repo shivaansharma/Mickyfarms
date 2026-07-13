@@ -1,128 +1,97 @@
 frappe.ui.form.on('Employee Contract', {
-    refresh: function(frm) {
-        // 1. Filter Cost Centers
+    onload: function(frm) {
+        // 1. FILTER: Only show Cost Centers marked as plots in the child table
         frm.set_query('plot', 'assigned_plots', function() {
             return {
-                filters: { 'custom_is_plot': 1 }
+                filters: {
+                    'custom_is_plot': 1,
+                    'company': frm.doc.company || ["!=", ""]
+                }
             };
         });
+    },
 
-        // Dashboard action payment generator button
-        if (!frm.is_new() && frm.doc.total_payout_amount > 0) {
-            frm.add_custom_button(__('Create Payment'), function() {
-                
-                let first_row = frm.doc.assigned_plots ? frm.doc.assigned_plots[0] : null;
-                if (!first_row || !first_row.plot) {
-                    frappe.msgprint(__('Please add at least one Plot row before generating a payment.'));
-                    return;
-                }
-                
-                frappe.db.get_value('Cost Center', first_row.plot, 'company')
-                    .then(r => {
-                        let target_company = r.message ? r.message.company : "";
-                        let rate = flt(frm.doc.rate_per_acre);
-                        
-                        // We will build the split rows for the multi-cost-center allocation
-                        let deduction_rows = [];
-                        
-                        $.each(frm.doc.assigned_plots || [], function(i, row) {
-                            let row_cost = flt(row.area) * rate;
-                            if (row_cost > 0) {
-                                deduction_rows.push({
-                                    "account": "contract - MF", // <-- Your Expense/Liability Account
-                                    "cost_center": row.plot,                 // <-- Individual Plot Cost Center
-                                    "amount": row_cost,                      // <-- Cost calculated for THIS plot
-                                    "description": __("Acreage cost split for {0} ({1} Acres)", [row.plot, row.area])
-                                });
-                            }
-                        });
-
-                        frappe.call({
-                            method: "frappe.client.insert",
-                            args: {
-                                doc: {
-                                    "doctype": "Payment Entry",
-                                    "payment_type": "Pay",
-                                    "party_type": "Employee",
-                                    "party": frm.doc.employee,
-                                    "paid_amount": flt(frm.doc.total_payout_amount),
-                                    "received_amount": flt(frm.doc.total_payout_amount),
-                                    "reference_no": frm.doc.name,
-                                    "reference_date": frappe.datetime.get_today(),
-                                    "company": target_company,
-                                    
-                                    // Primary fallbacks required by system validation rules
-                                    "cost_center": first_row.plot, 
-                                    "paid_from": "Cash - MF", 
-                                    "paid_to": "Employee Advances - MF",
-                                    
-                                    "paid_from_currency": "INR",
-                                    "paid_to_currency": "INR",
-                                    "source_exchange_rate": flt(1.0),
-                                    "target_exchange_rate": flt(1.0),
-                                    "base_paid_amount": flt(frm.doc.total_payout_amount),
-                                    "base_received_amount": flt(frm.doc.total_payout_amount),
-
-                                    // NEW: Multi-cost center allocation split data array
-                                    "deductions": deduction_rows 
-                                }
-                            },
-                            callback: function(r) {
-                                if(!r.exc) {
-                                    frappe.show_alert({message: __('Multi-plot Payment Entry Created Successfully!'), indicator: 'green'});
-                                    frappe.set_route('Form', 'Payment Entry', r.message.name);
-                                }
-                            }
-                        });
-                    });
+    refresh: function(frm) {
+        // Dynamic Pay Balance button shows up ONLY after submission and if there is money left to pay
+        if (frm.doc.docstatus === 1 && flt(frm.doc.net_payable_amount) > 0) {
+            frm.add_custom_button(__('Pay Remaining Balance'), function() {
+                frappe.new_doc('Payment Entry', {
+                    'payment_type': 'Pay',
+                    'party_type': 'Supplier',
+                    'party': frm.doc.employee,
+                    'paid_amount': frm.doc.net_payable_amount,
+                    'reference_no': frm.doc.name,
+                    'paid_from': 'Cash - MF',
+                    'paid_to': 'Creditors - MF',
+                    'company': frm.doc.company
+                });
             }, __('Actions'));
         }
     },
-    
-    employee: function(frm) {
-        if (frm.doc.employee) {
-            frappe.db.get_value('Employee', frm.doc.employee, 'employee_name', (r) => {
-                if (r && r.employee_name) {
-                    frm.set_value('employee_name', r.employee_name);
-                }
-            });
-        }
-    },
-    
+
+    // Recalculate if the base rate changes
     rate_per_acre: function(frm) {
+        calculate_totals(frm);
+    },
+
+    // Recalculate if the advance fee changes
+    pay_advance: function(frm) {
         calculate_totals(frm);
     }
 });
 
+// Child Table Event Listeners
 frappe.ui.form.on('Employee Contract Plot', {
+    // 2. AUTO-FETCH AREA: Pull custom_area when a plot is chosen
     plot: function(frm, cdt, cdn) {
-        let row = locals[cdt][cdn];
+        let row = frappe.get_doc(cdt, cdn);
         if (row.plot) {
-            frappe.db.get_value('Cost Center', row.plot, 'custom_area')
-                .then(r => {
-                    let area_val = r.message ? r.message.custom_area : 0;
-                    frappe.model.set_value(cdt, cdn, 'area', flt(area_val));
-                    calculate_totals(frm);
-                });
+            frappe.db.get_value('Cost Center', row.plot, 'custom_area', (r) => {
+                if (r && r.custom_area) {
+                    frappe.model.set_value(cdt, cdn, 'area', flt(r.custom_area));
+                } else {
+                    frappe.model.set_value(cdt, cdn, 'area', 0);
+                }
+                calculate_totals(frm);
+            });
+        } else {
+            frappe.model.set_value(cdt, cdn, 'area', 0);
+            calculate_totals(frm);
         }
     },
+
+    // Recalculate if someone overrides an individual row area manually
     area: function(frm, cdt, cdn) {
         calculate_totals(frm);
     },
+
+    // Recalculate if a row is removed
     assigned_plots_remove: function(frm) {
         calculate_totals(frm);
     }
 });
 
+// Core Calculation Logic
 function calculate_totals(frm) {
     let total_area = 0;
-    $.each(frm.doc.assigned_plots || [], function(i, row) {
+
+    // Sum up the areas of all assigned plots
+    (frm.doc.assigned_plots || []).forEach(row => {
         total_area += flt(row.area);
     });
+
+    // Update aggregate area field if it exists on main form
+    if (frm.meta.has_field('total_area')) {
+        frm.set_value('total_area', total_area);
+    }
+
+    // Calculations based on the dynamic sum
+    let total_payout = flt(frm.doc.rate_per_acre) * total_area;
     
-    let rate = flt(frm.doc.rate_per_acre);
-    let total_payout = total_area * rate;
-    
-    frm.set_value('total_contracted_area', total_area);
+    // Total outlays to factor out include advance + what was cleared before
+    let total_deductions = flt(frm.doc.pay_advance) + flt(frm.doc.total_paid_already);
+    let net_payable = total_payout - total_deductions;
+
     frm.set_value('total_payout_amount', total_payout);
+    frm.set_value('net_payable_amount', net_payable);
 }

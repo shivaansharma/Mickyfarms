@@ -3,11 +3,12 @@
 
 import frappe
 from frappe import _
-from frappe.utils import flt, getdate
+from frappe.utils import flt, getdate, add_days
 import re
 
 def execute(filters=None):
     filters = filters or {}
+    to_date = filters.get("to_date")
 
     if filters.get("employee"):
         columns = get_detail_columns()
@@ -16,13 +17,20 @@ def execute(filters=None):
         # Calculate summary values for a Single Employee Statement
         emp_id = filters.get("employee")
         company_abbr = get_company_abbr()
-        live_bal = get_current_balances(emp_id, company_abbr)
+        live_bal = get_current_balances(emp_id, company_abbr, to_date)
         
         total_wages_owed = live_bal["outstanding_balance"]
         total_advance = live_bal["advance_owed"]
         net_position = total_wages_owed - total_advance
+        total_days = data[-1].get("days_worked", 0) if data else 0
         
         report_summary = [
+            {
+                "value": total_days,
+                "label": _("Total Days Worked"),
+                "datatype": "Float",
+                "indicator": "Blue"
+            },
             {
                 "value": total_wages_owed,
                 "label": _("Wages Owed (We Owe Them)"),
@@ -49,6 +57,8 @@ def execute(filters=None):
         # Calculate summary values for Global Farm Overview
         total_advance = 0.0
         total_wages_owed = 0.0
+        total_days = data[-1].get("total_days_worked", 0) if data else 0
+
         for row in data:
             if row.get("employee"):  # Skip total row aggregation loop
                 total_advance += flt(row.get("latest_advance_owed"))
@@ -57,6 +67,12 @@ def execute(filters=None):
         net_position = total_wages_owed - total_advance
         
         report_summary = [
+            {
+                "value": total_days,
+                "label": _("Total Farm Days Worked"),
+                "datatype": "Float",
+                "indicator": "Blue"
+            },
             {
                 "value": total_wages_owed,
                 "label": _("Total Wages Owed (We Owe Them)"),
@@ -85,9 +101,13 @@ def get_company_abbr():
     return frappe.get_cached_value("Company", company, "abbr")
 
 
-def get_current_balances(employee, company_abbr):
-    """Fetches real-time live balance totals straight from the General Ledger and nets them."""
-    advance_balance = frappe.db.sql("""
+def get_current_balances(employee, company_abbr, to_date=None):
+    """Fetches real-time live balance totals straight from the General Ledger as of a specific date and nets them."""
+    date_filter = ""
+    if to_date:
+        date_filter = f"AND posting_date <= '{to_date}'"
+
+    advance_balance = frappe.db.sql(f"""
         SELECT SUM(debit - credit)
         FROM `tabGL Entry`
         WHERE
@@ -95,9 +115,10 @@ def get_current_balances(employee, company_abbr):
             AND account = %s
             AND docstatus = 1
             AND is_cancelled = 0
+            {date_filter}
     """, (employee, f"Employee Advances - {company_abbr}"))[0][0] or 0
 
-    payable_balance = frappe.db.sql("""
+    payable_balance = frappe.db.sql(f"""
         SELECT SUM(credit - debit)
         FROM `tabGL Entry`
         WHERE
@@ -105,6 +126,7 @@ def get_current_balances(employee, company_abbr):
             AND account = %s
             AND docstatus = 1
             AND is_cancelled = 0
+            {date_filter}
     """, (employee, f"Salary Payable - {company_abbr}"))[0][0] or 0
 
     adv = flt(advance_balance) if advance_balance > 0 else 0.0
@@ -131,7 +153,7 @@ def get_current_balances(employee, company_abbr):
 def get_detail_columns():
     return [
         {"label": _("Date"),        "fieldname": "payment_date", "fieldtype": "Date",         "width": 110},
-        {"label": _("Description"), "fieldname": "tx_type",      "fieldtype": "Data",         "width": 240},
+        {"label": _("Description"), "fieldname": "tx_type",      "fieldtype": "Data",         "width": 320},
         {
             "label": _("Reference No"),
             "fieldname": "voucher_no",
@@ -139,13 +161,11 @@ def get_detail_columns():
             "options": "voucher_type",
             "width": 140,
         },
-        {"label": _("Days Worked"),                    "fieldname": "days_worked",      "fieldtype": "Float",    "width": 100},
         {"label": _("Wages Earned"),                   "fieldname": "wages_earned",     "fieldtype": "Currency", "width": 130},
         {"label": _("Cash Paid Out"),                  "fieldname": "cash_paid_out",    "fieldtype": "Currency", "width": 130},
         {"label": _("Advance Balance (Their Debt)"),   "fieldname": "running_advance",  "fieldtype": "Currency", "width": 190},
         {"label": _("Wages Owed Balance (Our Debt)"),  "fieldname": "running_payable",  "fieldtype": "Currency", "width": 190},
         {"label": _("Net Position (+ve = they owe you)"), "fieldname": "net_balance", "fieldtype": "Currency", "width": 210},
-       
     ]
 
 
@@ -252,9 +272,9 @@ def get_detail_data(filters):
         credit  = flt(entry["credit"])
         key     = entry["voucher_no"]
         remark  = entry["je_remark"] or ""
+        
         if "Auto attendance processing" in remark or "Retroactive attendance clawback" in remark:
             if key not in auto_jv_groups:
-                # Extract days and rate via regex from the automated remark string
                 days_match = re.search(r"Net\s+(-?[\d.]+)\s+days", remark)
                 rate_match = re.search(r"₹\s*([\d.]+)/day", remark)
                 
@@ -335,8 +355,16 @@ def get_detail_data(filters):
 
     raw_timeline.sort(key=lambda x: x["payment_date"] or getdate("1970-01-01"))
 
+    # Establish correct opening balances if a date filter is applied
     current_running_advance = 0.0
     current_running_payable = 0.0
+    
+    if filters.get("from_date"):
+        prev_date = add_days(filters.get("from_date"), -1)
+        opening_bals = get_current_balances(emp_id, company_abbr, to_date=prev_date)
+        current_running_advance = opening_bals.get("advance_owed", 0.0)
+        current_running_payable = opening_bals.get("outstanding_balance", 0.0)
+
     total_days   = 0.0
     total_earned = 0.0
     total_paid   = 0.0
@@ -357,18 +385,19 @@ def get_detail_data(filters):
         item["running_advance"] = current_running_advance
         item["running_payable"] = current_running_payable
         item["net_balance"] = current_running_advance - current_running_payable
+        
         total_days   += item["days_worked"]
         total_earned += item["wages_earned"]
         total_paid   += item["cash_paid_out"]
 
     raw_timeline.reverse()
 
-    live_bal = get_current_balances(emp_id, company_abbr)
+    live_bal = get_current_balances(emp_id, company_abbr, filters.get("to_date"))
 
     if not raw_timeline:
         raw_timeline.append({
             "payment_date":    None,
-            "tx_type":         "<b>No transactional history found</b>",
+            "tx_type":         "<b>No transactional history found for this period</b>",
             "voucher_type":    "",
             "voucher_no":      "",
             "days_worked":     0.0,
@@ -382,10 +411,10 @@ def get_detail_data(filters):
     else:
         raw_timeline.append({
             "payment_date":    "",
-            "tx_type":         "<b>LIVE ACCOUNT TOTALS</b>",
+            "tx_type":         f"<b>PERIOD TOTALS (Days Worked: {total_days})</b>",
             "voucher_type":    "",
             "voucher_no":      "",
-            "days_worked":     total_days,
+            "days_worked":     total_days, 
             "wages_earned":    total_earned,
             "cash_paid_out":   total_paid,
             "running_advance": live_bal["advance_owed"],
@@ -395,20 +424,20 @@ def get_detail_data(filters):
         })
 
     return raw_timeline
+
 # ===============================================================
 # SUMMARY MODE (Clean, Consolidated Overview - One Row Per Person)
 # ===============================================================
 def get_summary_columns():
     return [
         {"label": _("Employee ID"),                   "fieldname": "employee",            "fieldtype": "Link",     "options": "Employee", "width": 140},
-        {"label": _("Employee Name"),                 "fieldname": "employee_name",       "fieldtype": "Data",     "width": 160},
+        {"label": _("Employee Name"),                 "fieldname": "employee_name",       "fieldtype": "Data",     "width": 260},
         {"label": _("Last Attendance Entry"),         "fieldname": "last_payment_date",   "fieldtype": "Date",     "width": 140},
-        {"label": _("Total Days Worked"),             "fieldname": "total_days_worked",   "fieldtype": "Float",    "width": 130},
         {"label": _("Calculated Wages"),              "fieldname": "total_payment",       "fieldtype": "Currency", "width": 140},
         {"label": _("Total Cash Distributed"),        "fieldname": "total_net_payout",    "fieldtype": "Currency", "width": 150},
-        {"label": _("Current Advance Balance (Live)"), "fieldname": "latest_advance_owed", "fieldtype": "Currency", "width": 200},
-        {"label": _("Current Wages Owed (Live)"),     "fieldname": "outstanding_balance", "fieldtype": "Currency", "width": 200},
-        {"label": _("Signature"),                      "fieldname": "signature",           "fieldtype": "Data",     "width": 150 },
+        {"label": _("Current Advance Balance"),       "fieldname": "latest_advance_owed", "fieldtype": "Currency", "width": 200},
+        {"label": _("Current Wages Owed"),            "fieldname": "outstanding_balance", "fieldtype": "Currency", "width": 200},
+        {"label": _("Signature"),                     "fieldname": "signature",           "fieldtype": "Data",     "width": 150},
     ]
 
 
@@ -446,7 +475,7 @@ def get_summary_data(filters):
         emp = r["employee"]
         tracked_employees.add(emp)
         if emp not in balance_cache:
-            balance_cache[emp] = get_current_balances(emp, company_abbr)
+            balance_cache[emp] = get_current_balances(emp, company_abbr, filters.get("to_date"))
 
         report_data.append({
             "employee":            emp,
@@ -464,7 +493,7 @@ def get_summary_data(filters):
         for emp in all_active:
             if emp.name not in tracked_employees:
                 if emp.name not in balance_cache:
-                    balance_cache[emp.name] = get_current_balances(emp.name, company_abbr)
+                    balance_cache[emp.name] = get_current_balances(emp.name, company_abbr, filters.get("to_date"))
                 report_data.append({
                     "employee":            emp.name,
                     "employee_name":       emp.employee_name,
@@ -487,9 +516,9 @@ def get_summary_data(filters):
 
         report_data.append({
             "employee":            "",
-            "employee_name":       "<b>MICKY FARM TOTALS</b>",
+            "employee_name":       f"<b>MICKY FARM TOTALS (Total Days: {total_days})</b>",
             "last_payment_date":   "",
-            "total_days_worked":   total_days,
+            "total_days_worked":   total_days, 
             "total_payment":       total_payment,
             "total_net_payout":    total_net,
             "latest_advance_owed": total_advance,
@@ -497,7 +526,6 @@ def get_summary_data(filters):
         })
 
     return report_data
-
 
 # ===============================================================
 # PROCESS UNRECORDED ATTENDANCE — automatically handles retro edits
@@ -516,7 +544,6 @@ def cancel_previous_auto_entries(employee):
     for row in previous_entries:
         je_name = row[0]
 
-        # ── Clear the backlinks FIRST before Frappe checks dependencies ──
         frappe.db.sql("""
             UPDATE `tabAttendance`
             SET custom_processed_in_je = NULL
@@ -524,7 +551,6 @@ def cancel_previous_auto_entries(employee):
         """, (je_name,))
         frappe.db.commit()
 
-        # Now Frappe won't find any linked Attendance records
         je_doc = frappe.get_doc("Journal Entry", je_name)
         je_doc.cancel()
 
@@ -560,7 +586,6 @@ def process_unrecorded_attendance(employee=None):
             skipped.append(f"{emp.employee_name} (no daily wage rate set)")
             continue
 
-        # Cancel any previous automated run entries first to prevent double booking
         cancel_previous_auto_entries(emp.name)
 
         last_record = frappe.db.sql("""
@@ -576,10 +601,8 @@ def process_unrecorded_attendance(employee=None):
         advance_deduction = 0.0
 
         if last_date:
-            # Look back 60 days to capture any retroactive manual edits
             lookback_start = add_days(last_date, -60)
 
-            # 1. Calculate how many days are approved in live attendance records for this window
             attendance_records = frappe.get_all(
                 "Attendance",
                 filters={
@@ -592,7 +615,6 @@ def process_unrecorded_attendance(employee=None):
             )
             total_attendance_days = sum(1 if a.status == "Present" else 0.5 for a in attendance_records)
 
-            # 2. See how many days we already paid them for within this same sliding window
             already_paid_days = frappe.db.sql("""
                 SELECT SUM(child.days_worked)
                 FROM `tabWeekly Wage Line Item` child
@@ -632,7 +654,6 @@ def process_unrecorded_attendance(employee=None):
 
         current_cycle_earnings = total_days * daily_rate
 
-        # SCENARIO A: Net Positive (Employee earned more days than retro deductions)
         if current_cycle_earnings > 0:
             advance_balance = _get_live_advance_balance(emp.name, advance_account)
             wages_owed      = _get_live_wages_owed(emp.name, salary_payable)
@@ -681,8 +702,6 @@ def process_unrecorded_attendance(employee=None):
                     "cost_center": cost_center,
                     "user_remark": f"Advance Auto-Offset: {emp.name}"
                 })
-
-        # SCENARIO B: Net Negative (Clawback is higher than earnings, employee owes money back)
         else:
             abs_earnings = abs(current_cycle_earnings)
             je = frappe.new_doc("Journal Entry")
@@ -711,7 +730,7 @@ def process_unrecorded_attendance(employee=None):
 
         je.insert(ignore_permissions=True)
         je.submit()
-        # Stamp each attendance record so fetch knows it's been accounted for
+        
         for att in frappe.get_all(
             "Attendance",
             filters={
