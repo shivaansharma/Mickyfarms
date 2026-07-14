@@ -62,9 +62,9 @@ class SupplierSettlement(Document):
                 "doctor": self.supplier, # Assuming doctor link matches the supplier ID
                 "company": self.company,
                 "docstatus": 1,
-                "outstanding_amount": (">", 0),
+                # "outstanding_amount": (">", 0),
             },
-            fields=["name", "outstanding_amount", "posting_date"],
+            fields=["name", "posting_date"],
             order_by="posting_date asc",
         )
         
@@ -168,11 +168,11 @@ def get_aggregated_outstanding(supplier, company):
     """, (supplier, company))[0][0] or 0
 
     # --- NEW: ADD DOCTOR LOG SUPPORT ---
-    doc_total = frappe.db.sql("""
-        SELECT SUM(outstanding_amount) 
-        FROM `tabDoctor Log` 
-        WHERE doctor=%s AND company=%s AND docstatus=1
-    """, (supplier, company))[0][0] or 0
+    # doc_total = frappe.db.sql("""
+    #     SELECT SUM(outstanding_amount) 
+    #     FROM `tabDoctor Log` 
+    #     WHERE doctor=%s AND company=%s AND docstatus=1
+    # """, (supplier, company))[0][0] or 0
     # -----------------------------------
-
+    doc_total = 0
     return inv_total + con_total + doc_total

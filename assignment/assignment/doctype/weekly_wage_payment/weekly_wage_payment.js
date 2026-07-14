@@ -169,7 +169,7 @@ function fetch_and_populate(frm) {
                     row.days_worked          = data.days_worked;
                     row.advance_snapshot     = data.advance_snapshot;
                     row.outstanding_snapshot = data.outstanding_snapshot;
-                    row.final_net_payout     = 0;
+                    // row.final_net_payout     = 0;
 
                     // Seed JS mirrors
                     row._base_advance     = flt(data.advance_snapshot);
