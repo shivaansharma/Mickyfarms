@@ -1,8 +1,8 @@
 {
  "app": "assignment",
  "charts": [],
- "content": "[{\"id\":\"FmFj1TmM8y\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 16px;\\\"><b>Manage Your Farm</b></span>\",\"col\":12}},{\"id\":\"XWMZS0Trqj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Employee Management&nbsp;\",\"col\":12}},{\"id\":\"Hj3aOhk5aM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add Employee\",\"col\":3}},{\"id\":\"9knfbnNXcB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance \",\"col\":3}},{\"id\":\"Hgne8WDNmV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance in Bulk\",\"col\":5}},{\"id\":\"8oEv0b3OYT\",\"type\":\"paragraph\",\"data\":{\"text\":\"Procurement\",\"col\":12}},{\"id\":\"4Nzo2-ZhM1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"8xnw-0-0mc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Invoice\",\"col\":3}},{\"id\":\"nXEvfcvlUT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier\",\"col\":3}},{\"id\":\"E4QyObn52h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Settlement\",\"col\":4}},{\"id\":\"ga10pOMfXw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Account Statement\",\"col\":5}},{\"id\":\"-AoswU0YBW\",\"type\":\"paragraph\",\"data\":{\"text\":\"Stock\",\"col\":12}},{\"id\":\"1qpnLf9emV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"id\":\"jARb_BWJuh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Ledger\",\"col\":3}},{\"id\":\"HdjE2GxFeW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Balance\",\"col\":3}},{\"id\":\"VNeTI2Q39D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item Prices\",\"col\":3}},{\"id\":\"oXPFn8Vs3W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Issue By Plot\",\"col\":4}},{\"id\":\"DFL5ftJAP8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Issue Non Plot\",\"col\":3}},{\"id\":\"9e4QDH3S1C\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Salary</span>\",\"col\":12}},{\"id\":\"AnFlj8d2WY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pay Wages\",\"col\":3}},{\"id\":\"xLr_lW6WtE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Theka\",\"col\":3}},{\"id\":\"t75ilJZGAa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Report\",\"col\":3}},{\"id\":\"uTDy8p-7s8\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Sales</span>\",\"col\":12}},{\"id\":\"rtI-vCuWtp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ffLmbh0Cwx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Register\",\"col\":3}},{\"id\":\"JypCO-rtPh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Analytics\",\"col\":3}},{\"id\":\"nPQ9K_PzpD\",\"type\":\"paragraph\",\"data\":{\"text\":\"Plot and Crop Management\",\"col\":12}},{\"id\":\"HDTf-jAU_q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cost Center\",\"col\":3}},{\"id\":\"VayYXp3IyW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Profit And Loss Statement\",\"col\":5}},{\"id\":\"ZjXvIuCWQi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Plot Statement \",\"col\":3}},{\"id\":\"LYv_tdBo1b\",\"type\":\"paragraph\",\"data\":{\"text\":\"Dairy\",\"col\":12}},{\"id\":\"xhInx8aAoU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bulk Milking Log\",\"col\":3}},{\"id\":\"D6LOVL3wbj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Animal\",\"col\":3}}]",
- "creation": "2026-07-02 22:41:51.665823",
+ "content": "[{\"id\":\"FmFj1TmM8y\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 16px;\\\"><b>Manage Your Farm</b></span>\",\"col\":12}},{\"id\":\"XWMZS0Trqj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Employee Management&nbsp;\",\"col\":12}},{\"id\":\"Hj3aOhk5aM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add Employee\",\"col\":3}},{\"id\":\"9knfbnNXcB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance \",\"col\":3}},{\"id\":\"Hgne8WDNmV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mark Attendance in Bulk\",\"col\":5}},{\"id\":\"8oEv0b3OYT\",\"type\":\"paragraph\",\"data\":{\"text\":\"Procurement\",\"col\":12}},{\"id\":\"4Nzo2-ZhM1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"vUMDuTyjdR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Buy\",\"col\":3}},{\"id\":\"nXEvfcvlUT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier\",\"col\":3}},{\"id\":\"E4QyObn52h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Settlement\",\"col\":4}},{\"id\":\"ga10pOMfXw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Account Statement\",\"col\":5}},{\"id\":\"-AoswU0YBW\",\"type\":\"paragraph\",\"data\":{\"text\":\"Stock\",\"col\":12}},{\"id\":\"1qpnLf9emV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"id\":\"jARb_BWJuh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Ledger\",\"col\":3}},{\"id\":\"VNeTI2Q39D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item Prices\",\"col\":3}},{\"id\":\"oXPFn8Vs3W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Issue By Plot\",\"col\":4}},{\"id\":\"wUV8r0b_Jr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Issue Non Plot\",\"col\":4}},{\"id\":\"888pw0fNI9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Balance\",\"col\":4}},{\"id\":\"9e4QDH3S1C\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Salary</span>\",\"col\":12}},{\"id\":\"AnFlj8d2WY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pay Wages\",\"col\":3}},{\"id\":\"xLr_lW6WtE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Theka\",\"col\":3}},{\"id\":\"t75ilJZGAa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Report\",\"col\":3}},{\"id\":\"uTDy8p-7s8\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Sales</span>\",\"col\":12}},{\"id\":\"rtI-vCuWtp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ffLmbh0Cwx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Register\",\"col\":3}},{\"id\":\"JypCO-rtPh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Analytics\",\"col\":3}},{\"id\":\"nPQ9K_PzpD\",\"type\":\"paragraph\",\"data\":{\"text\":\"Plot and Crop Management\",\"col\":12}},{\"id\":\"HDTf-jAU_q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cost Center\",\"col\":3}},{\"id\":\"VayYXp3IyW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Profit And Loss Statement\",\"col\":5}},{\"id\":\"ZjXvIuCWQi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Plot Statement \",\"col\":3}},{\"id\":\"r7RfHPSnah\",\"type\":\"paragraph\",\"data\":{\"text\":\"Dairy\",\"col\":12}},{\"id\":\"zM2fQw4r8L\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Animal\",\"col\":3}},{\"id\":\"wSBW5u0kI_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Doctor Log\",\"col\":3}},{\"id\":\"WLunnacFJv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Production Report\",\"col\":4}},{\"id\":\"9lKaNygd_v\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Doctor Expense Report\",\"col\":3}}]",
+ "creation": "2026-07-14 14:39:23.894845",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -13,7 +13,7 @@
  "label": "Farm",
  "link_type": "DocType",
  "links": [],
- "modified": "2026-07-04 13:25:55.078586",
+ "modified": "2026-07-14 14:58:01.067168",
  "modified_by": "Administrator",
  "module": "assignment",
  "name": "Farm",
@@ -35,6 +35,14 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Animal",
+   "link_to": "Animal",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Item Prices",
    "link_to": "Item Prices",
    "report_ref_doctype": "Stock Ledger Entry",
@@ -43,26 +51,18 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Purchase Invoice",
-   "link_to": "Purchase Invoice",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Bulk Milking Log",
-   "link_to": "Bulk Milking Log",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
    "label": "Stock Balance",
    "link_to": "Stock Balance",
    "report_ref_doctype": "Stock Ledger Entry",
    "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Doctor Log",
+   "link_to": "Doctor Log",
+   "stats_filter": "[]",
+   "type": "DocType"
   },
   {
    "color": "Green",
@@ -75,10 +75,10 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Animal",
-   "link_to": "Animal",
-   "stats_filter": "[]",
-   "type": "DocType"
+   "label": "Milk Production Report",
+   "link_to": "Milk Production Report",
+   "report_ref_doctype": "Bulk Milking Log",
+   "type": "Report"
   },
   {
    "color": "Grey",
@@ -86,6 +86,14 @@
    "label": "Profit And Loss Statement",
    "link_to": "Profit and Loss Statement",
    "report_ref_doctype": "GL Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Doctor Expense Report",
+   "link_to": "Doctor Expense Report",
+   "report_ref_doctype": "Doctor Log",
    "type": "Report"
   },
   {
@@ -222,6 +230,14 @@
    "link_to": "Stock Ledger",
    "report_ref_doctype": "Stock Ledger Entry",
    "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Buy",
+   "link_to": "Purchase Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
   }
  ],
  "title": "Farm",

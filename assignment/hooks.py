@@ -23,7 +23,7 @@ app_license = "mit"
 fixtures = [
    
     {
-        "doctype": "Property Setter",
+        "doctype": "Workspace",
         "filters": [
             ["module", "=", "assignment"]
         ]
@@ -268,5 +268,6 @@ doctype_js = {
     "Employee": "public/js/employee.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
-    "System Settings": "public/js/system.js"
+    "System Settings": "public/js/system.js",
+    "Employee Attendance Tool" : "public/js/employee_attendance_tool.js"
 }
