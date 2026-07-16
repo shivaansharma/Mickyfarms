@@ -19,7 +19,8 @@
   "rgt",
   "is_group",
   "old_parent",
-  "parent_animal"
+  "parent_animal",
+  "pregnancy_and_lactation_history"
  ],
  "fields": [
   {
@@ -58,11 +59,12 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Animal Type",
-   "options": "Cow\nBuffalo\nBull\nCalf\nHeifer",
+   "options": "Cow\nBuffalo\nBull\nCalf",
    "reqd": 1
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "Female",
    "fieldname": "gender",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -83,7 +85,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Lactation Status",
-   "options": "Milking\nDry\nPregnant\nHeifer",
+   "options": "Milking\nDry\nPregnant",
    "reqd": 1
   },
   {
@@ -121,14 +123,19 @@
    "ignore_user_permissions": 1,
    "label": "Parent Animal",
    "options": "Animal"
+  },
+  {
+   "fieldname": "pregnancy_and_lactation_history",
+   "fieldtype": "Table",
+   "label": "Pregnancy And Lactation History",
+   "options": "Animal Pregnancy Log"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2026-07-13 08:34:47.020945",
+ "modified": "2026-07-16 12:41:36.411741",
  "modified_by": "Administrator",
  "module": "assignment",
  "name": "Animal",
@@ -146,7 +153,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
