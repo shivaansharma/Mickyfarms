@@ -1,201 +1,45 @@
-# Internal Purchase Request Management
+Micky Farms Management System
+An advanced, enterprise-grade Agricultural Resource Planning (ERP) platform built on the Frappe Framework. Micky Farms unifies precise livestock genetic lineage tracking with multi-sector operational frameworks covering dairy logistics, crop rotation cycles, deep inventory management, and data-driven business intelligence reports.
 
-## Overview
+🏗️ Core Operational Modules
+The codebase is organized into four major functional domains:
 
-This project is a custom application built on the Frappe/ERPNext framework to manage internal purchase requests. It enables employees to raise requests, managers to review and approve or reject them, and automates the creation of Material Requests upon approval.
+1. Advanced Livestock & Breeding Registry
+Hierarchical Family Trees (animal): Implements Frappe's native is_tree nested-set database architecture to track recursive genetic lineages (Dam/Sire linkages) without recursive query overhead.
 
----
+Dynamic Lactation State Engine (animal.js): Client-side hooks automatically upgrade animal taxonomy and states (e.g., auto-transitioning a Heifer to a Cow upon entry of a breading_date, and switching states dynamically between Pregnant, Milking, and Dry based on logging gaps).
 
-## Objective
+Breed Standardization Profile (breed): Normalizes breed variations to track lineage production characteristics across the herd.
 
-To design and implement a structured purchase request system with validation, approval workflow, and ERPNext integration.
+Auditable Breeding Sub-Grid (animal_pregnancy_log): Child table system tracking infinite individual life cycles over historical parameters.
 
----
+Clinical Intervention Audits (doctor_log): Tracks veterinarian actions, medical treatments, vaccines, and localized health protocols per animal block.
 
-## Features Implemented
+2. Commercial Dairy Operations & Yield Logistics
+High-Volume Yield Auditing (bulk_milking_log & _item): Collects shift-wide milking metrics across sessions, linking yields back to targeted farm sections.
 
-### 1. Custom App
+Milk Production Report: Compiles raw milk yield volumes across shifts to track seasonal performance trends, herd productivity, and peak lactation windows.
 
-A dedicated Frappe app was created to encapsulate all functionality related to internal purchase management.
+Milk Payment Summary Report: Audits financial data from commercial milk sales, tracking revenues against delivery volumes.
 
----
+3. Crop Lifecycle & Plot-Based Inventory Control
+Acreage Asset Mapping (plot & crop_plot): Defines geometric parameters for farm sectors, assigning target fields cleanly to either crop growth zones or cattle grazing pastures.
 
-### 2. DocTypes
+Rotation Schedule Management (crop_cycle): Audits soil utility timelines, fertilization routines, crop growth milestones, and projected harvest windows.
 
-#### Internal Purchase Request
+Granular Asset Auditing (plot_material_log): Provides a continuous ledger tracking physical item usage across land sectors.
 
-Fields implemented:
+Material Allocation (material_issue_by_plot & _non_plot): Tracks localized feed, seed, and fertilizer deployment to individual plots, separating general farm consumption from direct cultivation inputs.
 
-* employee
-* department
-* required_by_date
-* status
-* approval_remarks
-* material_request (Link to Material Request)
-* items (Child Table)
+4. Supply Chain, Workforce, & Financial Analytics
+Internal Logistics Routing (internal_purchase_request & _item): Manages internal material requisitions before generating official purchase orders.
 
-#### Internal Purchase Request Item (Child Table)
+Internal Purchase Request Tracking Report: A real-time audit grid monitoring open vs. fulfilled supply requisitions across farm sectors.
 
-Fields implemented:
+Contractual Labor Allocation (employee_contract & _plot): Binds staff tasks to concrete land zones or specific livestock operations for transparent efficiency analytics.
 
-* item_code
-* item_name
-* quantity (qty)
-* estimated_rate
-* amount
+Weekly Financial Settlements (weekly_wage, weekly_wage_payment, & _line_item): Calculates structural payroll calculations, attendance matrices, field labor payouts, and raw material vendor accounts.
 
----
+Doctor Expense Report: Tracks clinical overhead, medicine costs, and professional veterinarian fees to isolate total livestock health expenditure.
 
-### 3. Status Flow
-
-The system supports the following statuses:
-
-* Draft
-* Pending
-* Approval
-* Approved
-* Rejected
-* Converted
-
-On submission, status is automatically set to **Pending**.
-
----
-
-### 4. Server-Side Validations
-
-The following validations are implemented in the backend:
-
-* Required date cannot be in the past
-* Quantity must be greater than 0
-* Estimated rate must be greater than 0
-* Amount is calculated as:
-
-  ```
-  amount = quantity × estimated_rate
-  ```
-* Approval remarks are mandatory when status is **Rejected**
-
----
-
-### 5. Client-Side Behaviour
-
-* Amount is automatically recalculated when:
-
-  * Quantity changes
-  * Estimated rate changes
-* Approval remarks field is shown only when status is **Rejected**
-* "Create Material Request" button is visible only when status is **Approved**
-
----
-
-### 6. Approval Actions
-
-Custom functionality is provided to:
-
-* Approve a request
-* Reject a request (remarks required)
-
-A whitelisted backend method is used:
-
-```python
-@frappe.whitelist()
-def update_status(name, status, remarks="")
-```
-
-This method:
-
-* Updates the status
-* Validates allowed values
-* Stores approval remarks
-
----
-
-### 7. ERPNext Integration
-
-For approved requests:
-
-* A Material Request is created programmatically
-* Items are mapped from Internal Purchase Request
-* Material Request type is set to **Purchase**
-* Schedule date is derived from required_by_date
-* The created Material Request is linked back to the original document
-* Status is updated to **Converted**
-
----
-
-### 8. Workspace & Reports
-
-#### Workspace
-
-A custom workspace is created under the Public category to organize:
-
-* Masters
-* Transactions (Internal Purchase Requests)
-* Reports
-
-#### Report
-
-A report is implemented for tracking Internal Purchase Requests with filters such as:
-
-* Status
-* Employee
-* Department
-* Date range
-
----
-
-### 9. Permissions
-
-* **Employee**
-
-  * Can create, submit, and view their own requests
-
-* **Manager**
-
-  * Can view, approve, and reject requests
-
-* **System Manager**
-
-  * Full access to all records
-
----
-
-## Installation
-
-```bash
-bench get-app internal_purchase [repository-link]
-bench --site [site-name] install-app internal_purchase
-bench migrate
-```
-
----
-
-## Usage
-
-1. Employee creates and submits an Internal Purchase Request
-2. Status changes to Pending
-3. Manager reviews the request:
-
-   * Approves or rejects (remarks required for rejection)
-4. If approved:
-
-   * "Create Material Request" action becomes available
-   * System generates a Material Request
-   * Status updates to Converted
-
-
-
-
-## Future Enhancements
-
-* Implementation of Frappe Workflow for multi-level approvals
-* Email notifications on status changes
-* Budget validation before approval
-* Dashboard for analytics and tracking
-* Role-based notification system
-
----
-
-## Author
-
-Shivaan Sharma
+Supplier Account Statement: Generates deep, auditable accounting ledgers tracking pending vendor balances, settlements, and historical transactions.
